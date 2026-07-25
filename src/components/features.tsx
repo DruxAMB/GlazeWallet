@@ -16,7 +16,7 @@ const features = [
     title: "High-performance market execution.",
     desc: "A pro-grade terminal with real-time order books and deep liquidity.",
     bullets: ["Limit & market orders", "Real-time order books", "Sub-second execution"],
-    image: "/swap.png",
+    image: "/trading.png",
   },
   {
     tag: "DISCOVER",
