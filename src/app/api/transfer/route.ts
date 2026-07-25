@@ -1,15 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCdpClient } from "@/lib/cdp";
+import { getAccountForUsername } from "@/lib/cdp";
 import { resolveWalletAddress } from "@/lib/redis";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { username, toAddress, token, amount, network } = body;
+    const { username, toAddress, token, amount, decimals } = body;
 
     if (!username || !toAddress || !token || !amount) {
       return NextResponse.json(
         { error: "Missing required fields: username, toAddress, token, amount" },
+        { status: 400 }
+      );
+    }
+
+    if (!/^0x[a-fA-F0-9]{40}$/.test(toAddress)) {
+      return NextResponse.json(
+        { error: "Invalid recipient address" },
         { status: 400 }
       );
     }
@@ -22,17 +29,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = getCdpClient();
+    const account = await getAccountForUsername(username);
 
-    const account = await client.evm.getAccount({
-      address: senderAddress as `0x${string}`,
-    });
+    const tokenDecimals =
+      typeof decimals === "number"
+        ? decimals
+        : token === "usdc"
+          ? 6
+          : 18;
+    const atomicAmount = BigInt(Math.floor(Number(amount) * 10 ** tokenDecimals));
+
+    if (atomicAmount <= 0n) {
+      return NextResponse.json(
+        { error: "Amount must be greater than zero" },
+        { status: 400 }
+      );
+    }
 
     const transferResult = await account.transfer({
       to: toAddress as `0x${string}`,
       token: token as "eth" | "usdc" | `0x${string}`,
-      amount: BigInt(amount),
-      network: network ?? "base",
+      amount: atomicAmount,
+      network: "base",
     });
 
     const transactionHash =

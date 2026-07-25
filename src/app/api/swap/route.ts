@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCdpClient } from "@/lib/cdp";
+import { getAccountForUsername } from "@/lib/cdp";
 import { resolveWalletAddress } from "@/lib/redis";
+
+const NATIVE_ETH_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+const CDP_NATIVE_ETH_SENTINEL = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { username, fromToken, toToken, amount, network } = body;
+    const { username, fromToken, toToken, amount, decimals, slippageBps } = body;
 
     if (!username || !fromToken || !toToken || !amount) {
       return NextResponse.json(
@@ -22,17 +25,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = getCdpClient();
+    const account = await getAccountForUsername(username);
 
-    const account = await client.evm.getAccount({
-      address: senderAddress as `0x${string}`,
-    });
+    const isNativeFrom = fromToken.toLowerCase() === NATIVE_ETH_ADDRESS;
+    const resolvedFromToken = isNativeFrom ? CDP_NATIVE_ETH_SENTINEL : fromToken;
+    const resolvedToToken =
+      toToken.toLowerCase() === NATIVE_ETH_ADDRESS ? CDP_NATIVE_ETH_SENTINEL : toToken;
+
+    const fromDecimals = typeof decimals === "number" ? decimals : 18;
+    const fromAmount = BigInt(Math.floor(Number(amount) * 10 ** fromDecimals));
+
+    if (fromAmount <= 0n) {
+      return NextResponse.json(
+        { error: "Amount must be greater than zero" },
+        { status: 400 }
+      );
+    }
 
     const swapResult = await account.swap({
-      network: network ?? "base",
-      fromToken,
-      toToken,
-      fromAmount: BigInt(amount),
+      network: "base",
+      fromToken: resolvedFromToken as `0x${string}`,
+      toToken: resolvedToToken as `0x${string}`,
+      fromAmount,
+      slippageBps: typeof slippageBps === "number" ? slippageBps : undefined,
     });
 
     return NextResponse.json({
