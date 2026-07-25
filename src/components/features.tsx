@@ -1,4 +1,5 @@
 import { ArrowRight, Compass, Repeat2, TrendingUp } from "lucide-react";
+import Image from "next/image";
 
 const features = [
   {
@@ -7,7 +8,7 @@ const features = [
     title: "Seamless, instant token exchanges.",
     desc: "Route through the best prices across DEXs in a single tap.",
     bullets: ["Auto-optimized routing", "0% swap fee on launch", "One-tap execution"],
-    visual: <SwapVisual />,
+    image: "/swap.png",
   },
   {
     tag: "TRADE",
@@ -15,7 +16,7 @@ const features = [
     title: "High-performance market execution.",
     desc: "A pro-grade terminal with real-time order books and deep liquidity.",
     bullets: ["Limit & market orders", "Real-time order books", "Sub-second execution"],
-    visual: <TradeVisual />,
+    image: "/swap.png",
   },
   {
     tag: "DISCOVER",
@@ -23,7 +24,7 @@ const features = [
     title: "Find new tokens directly in the terminal.",
     desc: "Explore trending tokens and fresh launches without leaving the app.",
     bullets: ["Trending on Base", "Built-in token profiles", "One-click research"],
-    visual: <DiscoverVisual />,
+    image: "/trending.png",
   },
 ];
 
@@ -62,7 +63,7 @@ function FeatureRow({
   title,
   desc,
   bullets,
-  visual,
+  image,
   reverse,
 }: {
   tag: string;
@@ -70,7 +71,7 @@ function FeatureRow({
   title: string;
   desc: string;
   bullets: string[];
-  visual: React.ReactNode;
+  image: string;
   reverse?: boolean;
 }) {
   return (
@@ -99,110 +100,23 @@ function FeatureRow({
         </ul>
       </div>
 
-      {/* Visual placeholder */}
+      {/* Visual */}
       <div className={reverse ? "lg:order-1" : ""}>
         <div className="group relative">
           <div className="absolute -inset-6 rounded-[2rem] bg-white/[0.03] blur-2xl opacity-60 transition-opacity group-hover:opacity-90" />
           <div className="relative overflow-hidden rounded-2xl glaze-glass-strong p-2">
-            {/* Placeholder label for future high-fidelity mockups */}
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-bg-soft">
-              {visual}
-              <div className="pointer-events-none absolute bottom-3 left-3 rounded-md bg-bg/70 px-2 py-1 font-mono text-[10px] text-muted-2 backdrop-blur">
-                mockup · {tag.toLowerCase()}
-              </div>
+              <Image
+                src={image}
+                alt={`${tag} mockup`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function SwapVisual() {
-  return (
-    <div className="flex h-full flex-col items-center justify-center gap-3 p-6">
-      <div className="w-full max-w-xs space-y-2">
-        <div className="flex items-center justify-between rounded-xl border border-border bg-white/[0.03] px-4 py-3">
-          <span className="flex items-center gap-2 text-sm">
-            <span className="size-6 rounded-full bg-white/10" />
-            ETH
-          </span>
-          <span className="font-mono text-sm text-muted">1.5</span>
-        </div>
-        <div className="flex justify-center">
-          <span className="inline-flex size-7 items-center justify-center rounded-full border border-border-strong bg-bg text-foreground">
-            <Repeat2 className="size-3.5" />
-          </span>
-        </div>
-        <div className="flex items-center justify-between rounded-xl border border-border-strong bg-white/[0.06] px-4 py-3">
-          <span className="flex items-center gap-2 text-sm">
-            <span className="size-6 rounded-full bg-white/10" />
-            USDC
-          </span>
-          <span className="font-mono text-sm">5,742.18</span>
-        </div>
-        <div className="mt-2 h-9 rounded-xl bg-white/15" />
-      </div>
-    </div>
-  );
-}
-
-function TradeVisual() {
-  return (
-    <div className="flex h-full flex-col p-4">
-      <div className="flex items-center justify-between text-xs text-muted-2">
-        <span>ETH/USDC</span>
-        <span className="text-positive">+3.2%</span>
-      </div>
-      {/* Fake candlestick chart */}
-      <div className="mt-3 flex flex-1 items-end gap-1.5">
-        {[40, 55, 48, 62, 50, 70, 65, 80, 72, 88, 76, 92].map((h, i) => (
-          <div key={i} className="flex flex-1 flex-col items-center gap-1">
-            <div
-              className="w-full rounded-sm bg-white/20"
-              style={{ height: `${h}%` }}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="mt-3 grid grid-cols-4 gap-2 text-center text-[10px] text-muted-2">
-        {["1m", "5m", "1H", "1D"].map((t, i) => (
-          <div
-            key={t}
-            className={`rounded-md py-1 ${
-              i === 2 ? "bg-white/10 text-foreground" : "bg-white/[0.03]"
-            }`}
-          >
-            {t}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DiscoverVisual() {
-  return (
-    <div className="flex h-full flex-col gap-2 p-4">
-      <div className="text-xs text-muted-2">Trending on Base</div>
-      {[
-        { n: "DEGEN", v: "+18.4%" },
-        { n: "HIGHER", v: "+12.1%" },
-        { n: "BRETT", v: "+9.7%" },
-        { n: "FCAST", v: "+6.3%" },
-      ].map((t) => (
-        <div
-          key={t.n}
-          className="flex items-center gap-3 rounded-lg border border-border bg-white/[0.03] px-3 py-2.5"
-        >
-          <div className="size-7 rounded-full bg-white/10" />
-          <div className="flex-1">
-            <div className="text-sm font-medium">{t.n}</div>
-            <div className="text-[11px] text-muted-2">Base · 0x4a…f21c</div>
-          </div>
-          <span className="text-xs font-medium text-positive">{t.v}</span>
-        </div>
-      ))}
     </div>
   );
 }
