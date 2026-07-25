@@ -110,42 +110,11 @@ function BentoCard({
 function SmartAccountsVisual() {
   return (
     <div className="relative h-full min-h-40">
-      <div className="absolute inset-0 rounded-2xl border border-border bg-bg-soft/60 p-5">
-        <div className="flex items-center gap-3">
-          <div className="size-9 rounded-xl bg-white/10" />
-          <div>
-            <div className="text-sm font-medium">@satoshi</div>
-            <div className="font-mono text-[11px] text-muted-2">
-              0x7a3…f21c · ERC-4337
-            </div>
-          </div>
-          <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-positive/15 px-2 py-1 text-[11px] font-medium text-positive">
-            <span className="size-1.5 rounded-full bg-positive" />
-            Active
-          </span>
-        </div>
-
-        <div className="mt-5 grid grid-cols-3 gap-2 text-center text-[11px]">
-          {[
-            { l: "EntryPoint", v: "v0.7" },
-            { l: "Paymaster", v: "Sponsored" },
-            { l: "Bundler", v: "CDP" },
-          ].map((x) => (
-            <div
-              key={x.l}
-              className="rounded-lg border border-border bg-white/[0.03] p-2.5"
-            >
-              <div className="text-muted-2">{x.l}</div>
-              <div className="mt-1 font-medium text-foreground">{x.v}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-4 flex items-center gap-2 rounded-lg border border-border bg-white/[0.03] px-3 py-2.5 font-mono text-[11px] text-muted">
-          <span className="text-foreground">→</span>
-          <span className="truncate">execute(userOp[], signature)</span>
-        </div>
-      </div>
+      <img
+        src="/config.png"
+        alt="Smart Accounts configuration"
+        className="h-full w-full rounded-2xl border border-border object-cover"
+      />
     </div>
   );
 }
