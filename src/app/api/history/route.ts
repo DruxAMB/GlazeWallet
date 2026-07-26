@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const history = await getTransactionHistory(address);
-    return NextResponse.json(history);
+    return NextResponse.json({ transactions: history });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });
