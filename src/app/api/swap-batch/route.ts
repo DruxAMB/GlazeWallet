@@ -147,6 +147,9 @@ export async function POST(request: NextRequest) {
 
     const scopedSmartAccount = await smartAccount.useNetwork("base");
 
+    const isNativeTo = toToken.toLowerCase() === NATIVE_ETH_ADDRESS;
+    const toAmount = swapQuote.toAmount;
+
     // Build fee transfer call
     let feeCall: { to: `0x${string}`; data: `0x${string}`; value: bigint };
     if (isNativeFrom) {
@@ -168,20 +171,40 @@ export async function POST(request: NextRequest) {
       };
     }
 
+    // Build post-swap call: transfer output tokens from smart account back to server account
+    let sweepCall: { to: `0x${string}`; data: `0x${string}`; value: bigint };
+    if (isNativeTo) {
+      sweepCall = {
+        to: owner.address as `0x${string}`,
+        data: "0x" as `0x${string}`,
+        value: toAmount,
+      };
+    } else {
+      const outputToken = getAddress(toToken);
+      sweepCall = {
+        to: outputToken,
+        data: encodeFunctionData({
+          abi: ERC20_ABI,
+          functionName: "transfer",
+          args: [owner.address as `0x${string}`, toAmount],
+        }),
+        value: 0n,
+      };
+    }
+
     let swapTxHash: string | null = null;
     let swapUserOpHash: string | null = null;
     let feeTxHash: string | null = null;
     let batched: boolean;
 
     if (!hasPermit2) {
-      // No Permit2: batch swap + fee transfer into a single UserOperation
+      // No Permit2: batch approve + swap + fee + sweep into a single UserOperation
       const swapCall = {
         to: swapQuote.transaction.to,
         data: swapQuote.transaction.data,
         value: swapQuote.transaction.value,
       };
 
-      // For ERC20 without Permit2, add approve call first
       const calls: Array<{ to: `0x${string}`; data: `0x${string}`; value: bigint }> = [];
 
       if (!isNativeFrom) {
@@ -199,6 +222,7 @@ export async function POST(request: NextRequest) {
 
       calls.push(swapCall);
       calls.push(feeCall);
+      calls.push(sweepCall);
 
       debugInfo.batchedCalls = calls.length;
 
@@ -223,13 +247,13 @@ export async function POST(request: NextRequest) {
       batched = true;
     } else {
       // Permit2: swap must be executed via swapQuote.execute() for signature handling
-      // Fee transfer sent as a separate UserOperation
+      // Fee + sweep sent as a separate UserOperation
       const swapResult = await swapQuote.execute();
       swapUserOpHash = swapResult.userOpHash ?? null;
       swapTxHash = swapResult.transactionHash ?? null;
 
       const feeResult = await scopedSmartAccount.sendUserOperation({
-        calls: [feeCall] as never,
+        calls: [feeCall, sweepCall] as never,
       });
 
       const feeCompleted = await scopedSmartAccount.waitForUserOperation({
