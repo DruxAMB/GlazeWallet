@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { encodeFunctionData, getAddress, parseAbi, parseEther } from "viem";
+import { encodeFunctionData, getAddress, parseAbi, parseEther, formatUnits } from "viem";
 import { getCdpClient, getAccountForUsername, accountNameForUsername } from "@/lib/cdp";
 import { resolveWalletAddress } from "@/lib/redis";
-import { NATIVE_ETH_ADDRESS } from "@/lib/base-client";
+import { NATIVE_ETH_ADDRESS, getPublicClient } from "@/lib/base-client";
 
 const FEE_BPS = 130; // 1.3% = 130 basis points
 const FEE_RECIPIENT = "0xFB65078E65d9e2c9349A74941C9FABd019ceAc0e" as const;
@@ -81,6 +81,20 @@ export async function POST(request: NextRequest) {
     debugInfo.smartAccount = smartAccount.address;
 
     const smartAddr = smartAccount.address;
+
+    // Check server account has enough ETH for pre-funding + gas
+    const publicClient = getPublicClient();
+    const serverBalance = await publicClient.getBalance({ address: owner.address as `0x${string}` });
+    const requiredEth = isNativeFrom ? totalInput + GAS_FUND_AMOUNT : GAS_FUND_AMOUNT;
+    if (serverBalance < requiredEth) {
+      return NextResponse.json(
+        {
+          error: `Insufficient ETH for gas funding. Server account has ${formatUnits(serverBalance, 18)} ETH but needs ${formatUnits(requiredEth, 18)} ETH.`,
+          debug: debugInfo,
+        },
+        { status: 400 },
+      );
+    }
 
     // Pre-fund smart account: transfer input tokens + ETH for gas from server account
     if (!isNativeFrom) {
@@ -284,6 +298,19 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json({ error: message, debug: debugInfo }, { status: 500 });
+    // Map common CDP SDK errors to user-friendly messages
+    let userMessage = message;
+    if (message.includes("insufficient funds") || message.includes("insufficient balance")) {
+      userMessage = "Insufficient ETH balance to cover gas fees. Please fund your wallet and try again.";
+    } else if (message.includes("allowance") || message.includes("Permit2")) {
+      userMessage = "Token approval required. Please try again or contact support.";
+    } else if (message.includes("liquidity")) {
+      userMessage = "No liquidity available for this token pair. Try a different amount or pair.";
+    } else if (message.includes("execution reverted") || message.includes("revert")) {
+      userMessage = "Transaction reverted on-chain. This may be due to slippage or insufficient liquidity. Try increasing slippage tolerance.";
+    } else if (message.includes("timeout") || message.includes("timed out")) {
+      userMessage = "Transaction timed out. Please try again.";
+    }
+    return NextResponse.json({ error: userMessage, debug: debugInfo }, { status: 500 });
   }
 }
