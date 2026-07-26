@@ -14,7 +14,7 @@ export function Footer() {
             <h2 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
               <span className="glaze-text-gradient">What will you trade?</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-pretty text-muted">
+            <p className="mx-auto mt-4 max-w-md text-pretty text-muted text-xs sm:text-sm">
               Install GlazeWallet and trade from your Mac in under a minute.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

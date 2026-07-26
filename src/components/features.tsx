@@ -30,7 +30,7 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="relative py-24 sm:py-32">
+    <section id="features" className="relative hidden md:block py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Heading */}
         <div className="mx-auto max-w-2xl text-center">

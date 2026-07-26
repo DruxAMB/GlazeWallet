@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "GlazeWallet" }],
   openGraph: {
-    title: "GlazeWallet — Your Favorite Desktop Wallet",
+    title: "Your Favorite Desktop Wallet",
     description:
       "Your native macOS command center to manage, trade, and view your crypto without the friction of browser extensions.",
     type: "website",

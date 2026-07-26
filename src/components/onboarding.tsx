@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { AtSign, Fingerprint, Rocket } from "lucide-react";
 
 const steps = [
@@ -6,21 +7,54 @@ const steps = [
     icon: AtSign,
     title: "Choose Username",
     desc: "Claim your @username in seconds — no extensions, no seed phrases.",
-    visual: <UsernameVisual />,
+    visual: (
+      <div className="relative rounded-2xl border border-border overflow-hidden">
+        <Image
+          src="/username.png"
+          alt="Choose your username"
+          width={400}
+          height={300}
+          className="w-full"
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
+      </div>
+    ),
   },
   {
     n: "02",
     icon: Fingerprint,
     title: "Set Passcode or Touch ID",
     desc: "Secure it with a 6-digit PIN or Touch ID.",
-    visual: <PasscodeVisual />,
+    visual: (
+      <div className="relative rounded-2xl border border-border overflow-hidden">
+        <Image
+          src="/passcode.png"
+          alt="Set passcode or Touch ID"
+          width={400}
+          height={300}
+          className="w-full"
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
+      </div>
+    ),
   },
   {
     n: "03",
     icon: Rocket,
     title: "Start Trading",
     desc: "Your wallet is live. Swap, trade, and discover instantly.",
-    visual: <DashboardVisual />,
+    visual: (
+      <div className="relative rounded-2xl border border-border overflow-hidden">
+        <Image
+          src="/wallet.png"
+          alt="Wallet ready to trade"
+          width={400}
+          height={300}
+          className="w-full"
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
+      </div>
+    ),
   },
 ];
 
@@ -37,7 +71,7 @@ export function Onboarding() {
             <span className="glaze-text-gradient">Zero Seed Phrases.</span>{" "}
             <span className="glaze-text-gradient">Zero Friction.</span>
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-pretty text-muted">
+          <p className="mx-auto mt-5 max-w-xl text-pretty text-muted text-sm md:text-base">
             From installation to your first trade in under a minute.
           </p>
         </div>
@@ -88,105 +122,8 @@ function StepCard({
       <div className="mt-6 flex-1">{visual}</div>
 
       <h3 className="mt-6 text-lg font-semibold tracking-tight">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted">{desc}</p>
+      <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted">{desc}</p>
     </div>
   );
 }
 
-function UsernameVisual() {
-  return (
-    <div className="rounded-2xl border border-border bg-bg-soft/60 p-4">
-      <div className="text-xs text-muted-2">Claim your handle</div>
-      <div className="mt-3 flex items-center rounded-xl border border-border-strong bg-white/[0.03] px-3.5 py-3">
-        <AtSign className="size-4 text-muted" />
-        <span className="ml-2 text-sm font-medium text-foreground">satoshi</span>
-        <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-positive/15 px-2 py-1 text-[11px] font-medium text-positive">
-          Available
-        </span>
-      </div>
-      <div className="mt-3 flex items-center justify-between text-xs text-muted-2">
-        <span>glaze.id/@satoshi</span>
-        <span className="font-mono">3 of 20 left</span>
-      </div>
-      <div className="mt-4 h-9 rounded-xl bg-white/15" />
-    </div>
-  );
-}
-
-function PasscodeVisual() {
-  return (
-    <div className="rounded-2xl border border-border bg-bg-soft/60 p-4">
-      <div className="flex items-center justify-between">
-        <div className="text-xs text-muted-2">Enter passcode</div>
-        <Fingerprint className="size-5 text-foreground" />
-      </div>
-      <div className="mt-4 flex justify-center gap-2">
-        {[true, true, true, false, false, false].map((filled, i) => (
-          <span
-            key={i}
-            className={`size-3 rounded-full ${
-              filled ? "bg-foreground" : "bg-white/15"
-            }`}
-          />
-        ))}
-      </div>
-      <div className="mt-5 grid grid-cols-3 gap-2">
-        {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => (
-          <div
-            key={d}
-            className="flex items-center justify-center rounded-lg border border-border bg-white/[0.03] py-2 text-sm text-muted"
-          >
-            {d}
-          </div>
-        ))}
-        <div className="flex items-center justify-center rounded-lg py-2 text-sm text-muted-2">
-          ←
-        </div>
-        <div className="flex items-center justify-center rounded-lg border border-border bg-white/[0.03] py-2 text-sm text-muted">
-          0
-        </div>
-        <div className="flex items-center justify-center rounded-lg py-2">
-          <Fingerprint className="size-4 text-foreground" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DashboardVisual() {
-  return (
-    <div className="rounded-2xl border border-border bg-bg-soft/60 p-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="text-xs text-muted-2">Wallet ready</div>
-          <div className="mt-1 text-lg font-semibold text-foreground">
-            $48,219.04
-          </div>
-        </div>
-        <span className="inline-flex items-center gap-1 rounded-md bg-positive/15 px-2 py-1 text-[11px] font-medium text-positive">
-          <span className="size-1.5 rounded-full bg-positive" />
-          Live
-        </span>
-      </div>
-      <div className="mt-4 space-y-2">
-        {[
-          { n: "ETH", v: "$38,104" },
-          { n: "USDC", v: "$6,210" },
-        ].map((t) => (
-          <div
-            key={t.n}
-            className="flex items-center gap-2.5 rounded-lg border border-border bg-white/[0.03] px-2.5 py-2"
-          >
-            <div className="size-6 rounded-full bg-white/10" />
-            <span className="text-xs font-medium">{t.n}</span>
-            <span className="ml-auto text-xs text-muted">{t.v}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-3 flex gap-2">
-        <div className="h-8 flex-1 rounded-lg bg-white/15" />
-        <div className="h-8 flex-1 rounded-lg border border-border bg-white/[0.03]" />
-      </div>
-    </div>
-  );
-}

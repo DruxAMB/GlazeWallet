@@ -14,17 +14,17 @@ export function Hero() {
             href="#security"
             className="group inline-flex items-center gap-2 rounded-full glaze-glass px-3.5 py-1.5 text-xs text-muted transition-colors hover:text-foreground"
           >
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2 py-0.5 text-foreground">
+            <span className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2 py-0.5 text-foreground">
               New
             </span>
             <span>ERC-4337 smart accounts, now native on macOS</span>
-            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="hidden sm:flex size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
         {/* Headline */}
         <h1
-          className="animate-rise [animation-delay:80ms] mt-7 text-balance text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl lg:text-[5.5rem]"
+          className="animate-rise [animation-delay:80ms] mt-7 text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl md:text-7xl lg:text-[5.5rem]"
         >
           <span className="glaze-text-gradient">Your Favorite</span>
           <br />
@@ -33,7 +33,7 @@ export function Hero() {
 
         {/* Subtext */}
         <p
-          className="animate-rise [animation-delay:160ms] mx-auto mt-7 max-w-xl text-pretty text-base leading-relaxed text-muted sm:text-lg"
+          className="animate-rise [animation-delay:160ms] mx-auto mt-7 max-w-xl text-pretty text-sm leading-relaxed text-muted sm:text-base md:text-lg"
         >
           Manage, trade, and view your crypto
           without the friction of browser extensions. Execute transactions

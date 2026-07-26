@@ -106,7 +106,7 @@ function FAQItem({
         }`}
       >
         <div className="overflow-hidden">
-          <p className="px-5 pb-5 text-sm leading-relaxed text-muted sm:px-6 sm:pb-6">
+          <p className="px-5 pb-5 text-xs sm:text-sm leading-relaxed text-muted sm:px-6 sm:pb-6">
             {answer}
           </p>
         </div>
