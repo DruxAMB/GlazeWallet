@@ -22,12 +22,14 @@ export function Navbar() {
 
           {/* Right: download button */}
             <Link
-              href="#download"
+              href="https://www.glaze.app/go?path=store%2Fc734575e-1b6c-4c9b-8a3a-980d73086f7e"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90 active:scale-[0.98] sm:px-5"
             >
               <Download className="relative size-4" />
-              <span className="relative hidden sm:inline">Download</span>
-              <span className="relative sm:hidden">Download</span>
+              <span className="relative hidden sm:inline">Install</span>
+              <span className="relative sm:hidden">Install</span>
             </Link>
         </nav>
       </div>

@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "What does it cost?",
-    a: "GlazeWallet is free to download and use. Swaps carry 0% fees on launch. Gas is sponsored — you pay nothing to transact.",
+    a: "GlazeWallet is free to install and use. Swaps carry 0% fees on launch. Gas is sponsored — you pay nothing to transact.",
   },
   {
     q: "Can I use my existing wallet?",

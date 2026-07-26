@@ -38,7 +38,7 @@ export function Onboarding() {
             <span className="glaze-text-gradient">Zero Friction.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-pretty text-muted">
-            From download to your first trade in under a minute.
+            From installation to your first trade in under a minute.
           </p>
         </div>
 
