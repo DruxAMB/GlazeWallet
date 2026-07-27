@@ -126,9 +126,10 @@ export async function getWalletBalances(username: string): Promise<WalletBalance
   return { address: account.address, network: "base", eth, usdc: usdcBalance, tokens: enrichedTokens };
 }
 
-export async function estimateSendFee(token: "eth" | "usdc"): Promise<{ gasEth: string }> {
+export async function estimateSendFee(token: string): Promise<{ gasEth: string }> {
   const gasPrice = await getPublicClient().getGasPrice();
-  const gasLimit = token === "usdc" ? 65000n : 21000n;
+  const isEth = token === "eth";
+  const gasLimit = isEth ? 21000n : 65000n;
   return { gasEth: formatUnits(gasPrice * gasLimit, 18) };
 }
 

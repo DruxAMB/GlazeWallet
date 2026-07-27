@@ -6,9 +6,19 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { token } = body;
 
-    if (!token || (token !== "eth" && token !== "usdc")) {
+    if (!token) {
       return NextResponse.json(
-        { error: 'Invalid or missing "token": expected "eth" or "usdc"' },
+        { error: 'Missing required field: "token"' },
+        { status: 400 }
+      );
+    }
+
+    const isEth = token === "eth";
+    const isUsd = token === "usdc";
+    const isAddress = /^0x[a-fA-F0-9]{40}$/.test(token);
+    if (!isEth && !isUsd && !isAddress) {
+      return NextResponse.json(
+        { error: 'Invalid "token": expected "eth", "usdc", or a 0x contract address' },
         { status: 400 }
       );
     }

@@ -34,9 +34,11 @@ export async function POST(request: NextRequest) {
     const tokenDecimals =
       typeof decimals === "number"
         ? decimals
-        : token === "usdc"
-          ? 6
-          : 18;
+        : token === "eth"
+          ? 18
+          : token === "usdc"
+            ? 6
+            : 18;
     const atomicAmount = BigInt(Math.floor(Number(amount) * 10 ** tokenDecimals));
 
     if (atomicAmount <= 0n) {
@@ -46,9 +48,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const transferToken =
+      token === "eth"
+        ? ("eth" as const)
+        : token === "usdc"
+          ? ("usdc" as const)
+          : (token as `0x${string}`);
+
     const transferResult = await account.transfer({
       to: toAddress as `0x${string}`,
-      token: token as "eth" | "usdc" | `0x${string}`,
+      token: transferToken,
       amount: atomicAmount,
       network: "base",
     });
