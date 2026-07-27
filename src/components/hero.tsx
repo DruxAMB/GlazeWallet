@@ -50,20 +50,20 @@ export function Hero() {
             href="https://www.glaze.app/go?path=store%2Fc734575e-1b6c-4c9b-8a3a-980d73086f7e"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-7 py-3.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90 active:scale-[0.98] sm:w-auto"
+            className="hidden sm:inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-7 py-3.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90 active:scale-[0.98] sm:w-auto"
           >
             <Download className="size-4" />
             <span>Install for macOS</span>
           </Link>
 
           <Link
-            href="https://x.com/GlazeWallet"
+            href="https://youtu.be/A3LmU4UlQDk"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full glaze-glass px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:glaze-glass-strong sm:w-auto"
+            className="inline-flex w-fit items-center justify-center gap-2 rounded-full glaze-glass px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:glaze-glass-strong sm:w-auto"
           >
             <Play className="size-4" />
-            <span>Demo</span>
+            <span>the monopoly</span>
           </Link>
         </div>
 

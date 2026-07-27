@@ -8,16 +8,16 @@ export function Footer() {
     <footer className="relative mt-12 border-t border-border">
       {/* Final CTA */}
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="relative my-20 overflow-hidden rounded-3xl glaze-glass-strong p-10 text-center sm:p-16">
+        <div className="relative my-20 overflow-hidden p-10 text-center sm:p-16">
           <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-white/[0.06] blur-[120px]" />
           <div className="relative">
-            <h2 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
               <span className="glaze-text-gradient">What will you trade?</span>
             </h2>
             <p className="mx-auto mt-4 max-w-md text-pretty text-muted text-xs sm:text-sm">
-              Install GlazeWallet and trade from your Mac in under a minute.
+              Install and trade from your Mac in under a minute.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="hidden mt-8 sm:flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="https://www.glaze.app/go?path=store%2Fc734575e-1b6c-4c9b-8a3a-980d73086f7e"
                 target="_blank"
@@ -26,15 +26,6 @@ export function Footer() {
               >
                 <Download className="size-4" />
                 <span>Install for macOS</span>
-              </Link>
-              <Link
-                href="https://x.com/GlazeWallet"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full glaze-glass px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:glaze-glass-strong sm:w-auto"
-              >
-                <XIcon className="size-4" />
-                Follow @GlazeWallet
               </Link>
             </div>
             <p className="mt-4 text-xs text-muted-2">
@@ -68,7 +59,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="transition-colors hover:text-foreground"
             >
-              @GlazeWallet
+              <XIcon className="size-4" />
             </Link>
           </nav>
 
