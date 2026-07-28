@@ -27,6 +27,7 @@ export const metadata: Metadata = {
       "Your native macOS command center to manage, trade, and view your crypto without the friction of browser extensions.",
     type: "website",
     siteName: "GlazeWallet",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "GlazeWallet — Your Favorite Desktop Wallet" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
     description:
       "Your native macOS command center to manage, trade, and view your crypto without the friction of browser extensions.",
     creator: "@GlazeWallet",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: "/app-icon.png",
