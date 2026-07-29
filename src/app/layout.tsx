@@ -8,6 +8,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://glazewallet.com"),
   title: "GlazeWallet — Your Favorite Desktop Wallet",
   description:
     "Your native macOS command center to manage, trade, and view your crypto without the friction of browser extensions. Execute transactions instantly using just your @username.",
